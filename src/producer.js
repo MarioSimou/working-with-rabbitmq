@@ -22,9 +22,9 @@ init(( async ()=> {
         let counter = 0 , message = 'Hello World'
         const sid = setInterval( () => {
             channel.publish( RABBIT_INFO.EXHCANGE.HELLO, RABBIT_INFO.ROUTING_KEY.HELLO , Buffer.from(`${message} ${counter}`) , { persistent: true })
-            console.log(`${message} ${counter}`)
+            process.stdout.write(`[ ${message} ${counter} ]\n`)
             counter++
-            if( counter >= 10 ) clearInterval( sid )
+            if( counter >=  200 ) clearInterval( sid )
         }, 2000 , message , counter)
     })
     .catch(handleError)
