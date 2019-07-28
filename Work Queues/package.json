@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "env-cmd -f ./.env babel-node ./src/index.js"
+    "producer": "env-cmd -f ./.env babel-node ./src/producer.js seconds=3",
+    "worker": "env-cmd -f ./.env babel-node ./src/worker.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +16,7 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
-    "@babel/preset-env": "^7.5.5"
+    "@babel/preset-env": "^7.5.5",
+    "pm2": "^3.5.1"
   }
 }
