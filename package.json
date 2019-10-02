@@ -1,0 +1,24 @@
+{
+  "name": "general",
+  "version": "1.0.0",
+  "description": "",
+  "main": "babel.config.js",
+  "dependencies": {
+    "amqplib": "^0.5.5",
+    "env-cmd": "^10.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/node": "^7.6.2",
+    "@babel/preset-env": "^7.6.2"
+  },
+  "scripts": {
+    "tutorial3-producer": "env-cmd -f .env babel-node --config-file ./babel.config.js ./Publish-Subscribe/producer/index.js",
+    "tutorial3-subscriber1": "env-cmd -f .env babel-node --config-file ./babel.config.js ./Publish-Subscribe/subscriber/sub1.js",
+    "tutorial-3subscriber2": "env-cmd -f .env babel-node --config-file ./babel.config.js ./Publish-Subscribe/subscriber/sub2.js",
+    "tutorial3": "npm run tutorial3-producer & npm run tutorial3-subscriber1 & npm run tutorial-3subscriber2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

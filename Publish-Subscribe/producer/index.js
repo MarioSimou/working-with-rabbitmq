@@ -1,11 +1,19 @@
-import Rabbitmq from '../Rabbitmq'
+import Rabbitmq, { TYPES } from '../../classes/Rabbitmq'
 
 const init = cb => cb()
 init(async () => {
+  const exchangeName = 'logs'
+  const queueName = 'publisher_event'
   const rabbitmq = new Rabbitmq({uri: process.env.RABBITMQ_URI })
   await rabbitmq.connect()  
-  await rabbitmq.createExchange('logs','fanout',{durable: true})
-  await rabbitmq.createQueue('my', {durable: true, autoDelete: false})
-  await rabbitmq.bindQueueToExchange('my', 'logs')
-  await rabbitmq.publish('logs','', Buffer.from('Hello world'))
+  await rabbitmq.createExchange(exchangeName, TYPES.EXCHANGE.FANOUT)
+  await rabbitmq.createQueue(queueName, {durable: true})
+  await rabbitmq.bindQueueToExchange(queueName,exchangeName, '')
+  
+  let c = 0;
+  let timerId = setInterval(()=> {
+    const msg = `Message sent at counter: ${++c}`
+    rabbitmq.publish(exchangeName, '', Buffer.from(msg))
+    if(c === 100) clearInterval(timerId)
+  },100)
 })

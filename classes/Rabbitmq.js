@@ -28,18 +28,38 @@ Rabbitmq.prototype.connect = async function(){
 }
 
 Rabbitmq.prototype.createExchange = function(...args){
-  this._channel.assertExchange(...args)
+  return promisify(this._channel.assertExchange).apply(this._channel, this._parseArgs(args,3))
 }
 
 Rabbitmq.prototype.createQueue = function(...args){
-  this._channel.assertQueue(...args)
+  return promisify(this._channel.assertQueue).apply(this._channel, this._parseArgs(args,2))
 }
+
 Rabbitmq.prototype.bindQueueToExchange = function(...args){
-  this._channel.bindQueue(...args)
+  return promisify(this._channel.bindQueue).apply(this._channel, this._parseArgs(args,4))
 }
 
 Rabbitmq.prototype.publish = function(...args){
-  this._channel.publish(...args)
+  return  promisify(this._channel.publish).apply(this._channel, this._parseArgs(args,4))
 }
+
+Rabbitmq.prototype.consume = function(...args){
+  return promisify(this._channel.consume).apply(this._channel, this._parseArgs(args,3))
+}
+
+Rabbitmq.prototype._parseArgs = function(args,size){
+  return new Array(size).fill(undefined).map((_,i) => args[i])
+}
+
+export const TYPES = {
+  EXCHANGE : {
+    FANOUT: 'fanout',
+    TOPIC: 'topic',
+    DIRECT: 'direct',
+    HEADERS: 'headers'
+  }
+}
+Object.freeze(TYPES)
+
 
 export default Rabbitmq
